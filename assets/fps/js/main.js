@@ -263,9 +263,8 @@ function controls(deltaTime) {
   if (playerOnFloor && keyStates["Space"]) playerVelocity.y = 15;
 }
 
-const loader = new GLTFLoader();
-
-loader.load("../../models/gltf/collision-world.glb", (gltf) => {
+const loader = new GLTFLoader().setPath("../../assets/models/gltf/");
+loader.load("collision-world.glb", (gltf) => {
   scene.add(gltf.scene);
   worldOctree.fromGraphNode(gltf.scene);
   gltf.scene.traverse((child) => {
