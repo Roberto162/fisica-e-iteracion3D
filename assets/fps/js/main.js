@@ -58,8 +58,52 @@ const NUM_SPHERES = 100;
 const SPHERE_RADIUS = 0.2;
 const STEPS_PER_FRAME = 5;
 
-const sphereGeometry = new THREE.IcosahedronGeometry(SPHERE_RADIUS, 5);
-const sphereMaterial = new THREE.MeshLambertMaterial({ color: 0xdede8d });
+const starShape = new THREE.Shape();
+
+const outerRadius = SPHERE_RADIUS;
+const innerRadius = SPHERE_RADIUS * 0.45;
+const spikes = 5;
+
+for (let i = 0; i < spikes * 2; i++) {
+
+  const radius = i % 2 === 0 ? outerRadius : innerRadius;
+
+  const angle = (i / (spikes * 2)) * Math.PI * 2;
+
+  const x = Math.cos(angle) * radius;
+  const y = Math.sin(angle) * radius;
+
+  if (i === 0) {
+    starShape.moveTo(x, y);
+  } else {
+    starShape.lineTo(x, y);
+  }
+
+}
+
+starShape.closePath();
+
+const extrudeSettings = {
+  depth: 0.12,
+  bevelEnabled: true,
+  bevelSegments: 2,
+  steps: 1,
+  bevelSize: 0.04,
+  bevelThickness: 0.04
+};
+
+const sphereGeometry = new THREE.ExtrudeGeometry(
+  starShape,
+  extrudeSettings
+);
+
+const sphereMaterial = new THREE.MeshStandardMaterial({
+  color: 0xffd700,
+  emissive: 0xffaa00,
+  emissiveIntensity: 0.4,
+  metalness: 0.7,
+  roughness: 0.3
+});
 
 const spheres = [];
 let sphereIdx = 0;
@@ -231,8 +275,14 @@ function updateSpheres(deltaTime) {
   });
   spheresCollisions();
   for (const sphere of spheres) {
-    sphere.mesh.position.copy(sphere.collider.center);
-  }
+
+  sphere.mesh.position.copy(sphere.collider.center);
+
+  sphere.mesh.rotation.x += 0.08;
+  sphere.mesh.rotation.y += 0.08;
+  sphere.mesh.rotation.z += 0.04;
+
+}
 }
 
 function getForwardVector() {
