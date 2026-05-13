@@ -1,11 +1,11 @@
-import * as THREE from "../../assets/build/three.module.js";
+import * as THREE from "../../build/three.module.js";
 
-import Stats from "../../assets/jsm/libs/stats.module.js";
-import { GLTFLoader } from "../../assets/jsm/loaders/GLTFLoader.js";
-import { Octree } from "../../assets/jsm/math/Octree.js";
-import { OctreeHelper } from "../../assets/jsm/helpers/OctreeHelper.js";
-import { Capsule } from "../../assets/jsm/math/Capsule.js";
-import { GUI } from "../../assets/jsm/libs/lil-gui.module.min.js";
+import Stats from "../../jsm/libs/stats.module.js";
+import { GLTFLoader } from "../../jsm/loaders/GLTFLoader.js";
+import { Octree } from "../../jsm/math/Octree.js";
+import { OctreeHelper } from "../../jsm/helpers/OctreeHelper.js";
+import { Capsule } from "../../jsm/math/Capsule.js";
+import { GUI } from "../../jsm/libs/lil-gui.module.min.js";
 const clock = new THREE.Clock();
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x88ccee);
@@ -263,7 +263,7 @@ function controls(deltaTime) {
   if (playerOnFloor && keyStates["Space"]) playerVelocity.y = 15;
 }
 
-const loader = new GLTFLoader().setPath("../../assets/models/gltf/");
+const loader = new GLTFLoader().setPath("../../models/gltf/");
 loader.load("collision-world.glb", (gltf) => {
   scene.add(gltf.scene);
   worldOctree.fromGraphNode(gltf.scene);
