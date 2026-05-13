@@ -263,47 +263,25 @@ function controls(deltaTime) {
   if (playerOnFloor && keyStates["Space"]) playerVelocity.y = 15;
 }
 
-const loader = new GLTFLoader();
-
-loader.load(
-  "/fisica-e-iteracion3D/assets/models/gltf/collision-world.glb",
-  (gltf) => {
-
-    scene.add(gltf.scene);
-
-    worldOctree.fromGraphNode(gltf.scene);
-
-    gltf.scene.traverse((child) => {
-
-      if (child.isMesh) {
-
-        child.castShadow = true;
-        child.receiveShadow = true;
-
-        if (child.material.map) {
-          child.material.map.anisotropy = 4;
-        }
-
-      }
-
-    });
-
-    const helper = new OctreeHelper(worldOctree);
-
-    helper.visible = false;
-
-    scene.add(helper);
-
-    const gui = new GUI({ width: 200 });
-
-    gui.add({ debug: false }, "debug").onChange(function (value) {
-
-      helper.visible = value;
-
-    });
-
-  }
-);
+const loader = new GLTFLoader().setPath("../../assets/models/gltf/");
+loader.load("collision-world.glb", (gltf) => {
+  scene.add(gltf.scene);
+  worldOctree.fromGraphNode(gltf.scene);
+  gltf.scene.traverse((child) => {
+    if (child.isMesh) {
+      child.castShadow = true;
+      child.receiveShadow = true;
+      if (child.material.map) child.material.map.anisotropy = 4;
+    }
+  });
+  const helper = new OctreeHelper(worldOctree);
+  helper.visible = false;
+  scene.add(helper);
+  const gui = new GUI({ width: 200 });
+  gui.add({ debug: false }, "debug").onChange(function (value) {
+    helper.visible = value;
+  });
+});
 
 function teleportPlayerIfOob() {
   if (camera.position.y <= -25) {
